@@ -1,9 +1,8 @@
 <?php
 include("../db/db.php");
-if(!isset($curso =$_POST['nombre'])){
 
-}
-else{ $id=$_POST['id'];
+
+ $id=$_POST['id'];
 
 
 $curso =$_POST['nombre'];
@@ -21,6 +20,6 @@ $duracion= $_POST['duracion'];
     header("Location:view_course.php?confirmation=".$flag);
 }
 
-}
+
 
 ?>

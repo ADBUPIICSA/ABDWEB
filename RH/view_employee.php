@@ -1,3 +1,14 @@
+<?php 
+include("../db/db.php");
+    $conn = sqlsrv_connect( $serverName, $connectionInfo);
+    $query="proc_seleccionar_empleado ";
+    $stmt = sqlsrv_query( $conn, $query);
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -347,42 +358,42 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Ver/modificar aspirantes</h1>
+                        <h1 class="page-header">Ver/modificar empleados</h1>
                            <div class="panel panel-default">
-                        <div class="panel-body">
-                            <h3>Example: Stacked-to-horizontal</h3>
-                            <p>Using a single set of
-                                <code>.col-md-*</code> grid classes, you can create a default grid system that starts out stacked on mobile devices and tablet devices (the extra small to small range) before becoming horizontal on desktop (medium) devices. Place grid columns in any
-                                <code>.row</code>.</p>
-                            <div class="row show-grid">
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                            </div>
-                            <div class="row show-grid">
-                                <div class="col-md-8">.col-md-8</div>
-                                <div class="col-md-4">.col-md-4</div>
-                            </div>
-                            <div class="row show-grid">
-                                <div class="col-md-3">.col-md-3</div>
-                                <div class="col-md-4">.col-md-4</div>
-                                <div class="col-md-4">.col-md-4</div>
-                            </div>
-                            <div class="row show-grid">
-                                <div class="col-md-6">.col-md-6</div>
-                                <div class="col-md-6">.col-md-6</div>
-                            </div>
-                        </div>
-                    </div>
+                        <table class="table table-bordered table-striped">
+                             <thead>
+                                        <tr>
+                                            
+                                            <th>
+                                               Nombre
+                                            </th>
+                                            <th>
+                                                Coreo
+                                            </th>
+                                            <th>
+                                                Editar
+                                                
+                                            </th>
+                                            
+                                           
+                                        </tr>
+                                    </thead>
+                                <tbody>
+                                    
+                               <?php while($row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC)){
+                                echo "<tr>";
+                                echo    "<td>".$row['nombre']." ".$row['aPaterno']." ".$row['aMaterno']."</td>";
+                                echo    "<td>".$row['email']."</td>";
+                                echo    "<td> <a href='modify_employee.php?id=".$row['num_empleado'].
+                                    "'>Editar</a></td>";
+                                  }
+
+
+                               ?>            
+                            </tbody>
+                                                
+                    </table>
+                    
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -403,7 +414,7 @@
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
-
+    <script src="../js/delete.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
 

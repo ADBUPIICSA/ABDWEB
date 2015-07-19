@@ -1,3 +1,20 @@
+<?php session_start(); 
+$id= $_GET['id'];
+ include("../db/db.php");
+    $conn = sqlsrv_connect( $serverName, $connectionInfo);
+    
+    
+
+    $query="select * from empleados where num_empleado = '$id'";
+    $stmt = sqlsrv_query( $conn, $query);
+ 
+
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -345,62 +362,87 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Nuevo Aspirante</h1>
-                         <form role="form" method='post' action=''>
+                        <h1 class="page-header">Modificar empleado</h1>
+                         <form role="form" method="post" action="save_employee.php">
                                     <div class="form-group">
-                                         
-                                        <div class="form-group">
-                                            <label>Nombre</label>
-                                            <input class="form-control" placeholder="Enter text">
+                                         <?php while($row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC)){ ?>
+                                        <div class='form-group'>
+                                          <label>Nombre</label>
+                                           <?php echo "<input type='text'class='form-control' value='".$row['nombre']."' name ='nombre'>" ?>
                                         </div>
 
                                         <div class="form-group">
                                             <label>Apellido Paterno</label>
-                                            <input class="form-control" placeholder="Enter text">
+                                            <?php echo"<input type='text' class='form-control' value='".$row['aPaterno']."' name ='ap'>" ?>
                                         </div>
 
 
                                             <div class="form-group">
                                             <label>Apellido Materno</label>
-                                            <input class="form-control" placeholder="Enter text">
+                                            <input class="form-control" value="<?php echo $row['aMaterno'] ?>"  name ="am">
+                                            
                                         </div>
 
 
                                             <div class="form-group">
                                             <label>Telefono</label>
-                                            <input class="form-control" placeholder="Enter text">
+                                            <input class="form-control" value="<?php echo $row['telefono'] ?>" name ="tel">
                                         </div>
 
                                             <div class="form-group">
                                             <label>Dirección</label>
-                                            <input class="form-control" placeholder="Enter text">
+                                            <input class="form-control" value="<?php echo $row['direccion'] ?>" name="dir">
                                         </div>
 
                                          <div class="form-group">
                                             <label>e-mail</label>
-                                            <input class="form-control" placeholder="Enter text">
+                                            <input class="form-control" value="<?php echo $row['email'] ?>" name="email">
+                                        </div>
+                                         <div class="form-group">
+                                            <label>fecha de ingreso</label>
+                                            <input class="form-control" id="datetimepicker8" value="<?php echo $row['fecha_ingreso'] ?>" name="ingreso">
                                         </div>
                                         <label>Salario</label>
                                       <div class="form-group input-group">
                                             <span class="input-group-addon">$</span>
-                                            <input type="text" class="form-control">
+                                            <input type="text" class="form-control" value="<?php echo $row['salario'] ?>" name="salario">
                                             <span class="input-group-addon">.00</span>
                                         </div>
 
                                     <div class="form-group">
                                             <label>Puesto</label>
-                                            <select class="form-control">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
+                                            
+                                                <?php 
+                                                 echo "<select class='form-control' name='puesto' >";
+                                                   $query1="proc_seleccionar_puesto";
+                                                    $stmt1 = sqlsrv_query( $conn, $query1);
+                                                while($row1 = sqlsrv_fetch_array( $stmt1, SQLSRV_FETCH_ASSOC)){
+                                               
+                                                   
+ 
+                                                  if($row['id_puesto']===$row1['id_puesto']){
+                                            echo "<option value='".$row1['id_puesto']."' selected='selected'>"
+                                                        .$row1['nombre']."</option>";
+                                                    }
+                                                    else{
+                                                    echo "<option value='".$row1['id_puesto']."'>"
+                                                    .$row1['nombre']."</option>";
+
+                                                }
+
+
+                                                }   
+
+
+                                                }
+                                            echo  "<input type='hidden' class='form-control' name='id'
+                                       value='".$id."'>";
+                                                ?>
+                                                
                                             </select>
                                         </div>
-
                                 <button type="submit" class="btn btn-default">Submit Button</button>
-                                        <button type="reset" class="btn btn-default">Reset Button</button>
-
+                                <button type="reset" class="btn btn-default">Reset Button</button>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>

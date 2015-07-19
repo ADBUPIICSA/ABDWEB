@@ -43,7 +43,7 @@ sqlsrv_close($conn);
 global $serverName, $connectionInfo; 
 
 	$conn = sqlsrv_connect( $serverName, $connectionInfo);
-	$query = "Select TOP 1 * from usuarios 
+	$query = "Select TOP 1 * from usuario 
 	WHERE usuario='$user' OR correo='$user' AND contrasena='$psw'";
 
 	$params = array();

@@ -1,3 +1,26 @@
+<?php
+
+session_start(); 
+
+ include("../db/db.php");
+    $conn = sqlsrv_connect( $serverName, $connectionInfo);
+    $query="select * from compensaciones ";
+    $query1="select * from empleados";
+   $stmt = sqlsrv_query( $conn, $query);
+    $stmt1 = sqlsrv_query( $conn, $query1);
+$arr = array( );
+$p=0;
+
+     while($row = sqlsrv_fetch_array($stmt , SQLSRV_FETCH_ASSOC)){
+
+            $arr[$p]=$row['id_compensacion'];
+            $arr[$p+1]=$row['nombre_comp'];
+            $p=+2;
+            
+     }
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -348,46 +371,58 @@
                     <div class="col-lg-12">
                         <h1 class="page-header">Asignar curso</h1>
  <div class="panel panel-default">
-                        <div class="panel-body">
-                            <h3>Example: Stacked-to-horizontal</h3>
-                            <p>Using a single set of
-                                <code>.col-md-*</code> grid classes, you can create a default grid system that starts out stacked on mobile devices and tablet devices (the extra small to small range) before becoming horizontal on desktop (medium) devices. Place grid columns in any
-                                <code>.row</code>.</p>
-                            <div class="row show-grid">
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-4"><div class="form-group">
-                                            <label>Compensación</label>
-                                            <select class="form-control">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                        </div></div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                                <div class="col-md-1">.col-md-1</div>
-                            </div>
-                            <div class="row show-grid">
-                                <div class="col-md-8">.col-md-8</div>
-                                <div class="col-md-4">.col-md-4</div>
-                            </div>
-                            <div class="row show-grid">
-                                <div class="col-md-3">.col-md-3</div>
-                                <div class="col-md-4">.col-md-4</div>
-                                <div class="col-md-4">.col-md-4</div>
-                            </div>
-                            <div class="row show-grid">
-                                <div class="col-md-6">.col-md-6</div>
-                                <div class="col-md-6">.col-md-6</div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
+                       <div class="panel panel-default">
+                                 <table class="table table-bordered table-striped">
+                             <thead>
+                                        <tr>
+                                         <th>
+                                               id
+                                            </th>
+                                            
+                                            <th>
+                                               Empleado
+                                            </th>
+                                            <th>
+                                                Curso
+                                            </th>
+                                            <th>
+                                                Asignar
+                                                
+                                            </th>
+                                           
+                                        </tr>
+                                    </thead>
+                                <tbody>
+                                    
+                               <?php while($row1 = sqlsrv_fetch_array( $stmt1, SQLSRV_FETCH_ASSOC)){
+                                echo "<tr>";
+                                  echo      "<td id='idemp'>".$row1['num_empleado']."</td>";
+                                echo    "<td>".$row1['nombre']." ".$row1['aPaterno']." ".$row1['aMaterno']."</td>";
+                                   
+                                        
+                                echo    "<td> <select class='form-control' name='comp' id='idcomp' >";
+                                 
+                                 
+                                   for ($i=0; $i <count($arr) ; $i=$i+2) { 
+                                                                        
+                                echo "<option value=".$arr[$i].">".$arr[$i+1]."</option>";}
+                               echo "</select>";
+                                echo"</td>";
+                                echo    "<td> <button type='button' id='asignar' class='btn btn-primary'>Asignar</button></td>";
+                                
+                                echo" </tr>";
+                             
+                                }
+                             
+                                   
+                               ?>            
+                            </tbody>
+                                                
+                    </table>
+                  
+                              </div>
+
+
 
 
                     
@@ -404,6 +439,7 @@
 
     <!-- jQuery -->
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+     <script src="../js/post1.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

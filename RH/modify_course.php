@@ -401,7 +401,7 @@ $id= $_GET['id'];
                                 <div class="form-group input-group">
                                              
                                         <?php  echo  "<input type='text' class='form-control' name='duracion'
-                                       value='".$row['Duracion']."'>";
+                                       value='".$row['duracion']."'>";
                                          }   
                                         ?>
                                             <span class="input-group-addon">hrs</span>

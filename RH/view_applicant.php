@@ -365,7 +365,9 @@ session_start();
                            <table class="table table-bordered table-striped">
                              <thead>
                                         <tr>
-                                            
+                                            <th>
+                                               Id
+                                            </th>
                                             <th>
                                                Nombre
                                             </th>
@@ -376,6 +378,11 @@ session_start();
                                                 Editar
                                                 
                                             </th>
+                                            <th>
+                                                Eliminar
+                                                
+                                            </th>
+                                            
                                            
                                         </tr>
                                     </thead>
@@ -383,11 +390,14 @@ session_start();
                                     
                                <?php while($row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC)){
                                 echo "<tr>";
+                                echo "<td id='id_ap'>".$row['id_aspirante']."</td>";
                                 echo    "<td>".$row['nombre']."</td>";
                                 echo    "<td>".$row['rfc']."</td>";
                                 echo    "<td> <a href='modify_applicant.php?id=".$row['id_aspirante'].
                                     "'>Editar</a></td>";
+                                echo    "<td>  <a href='#' id='".$row['id_aspirante']."' class='delete' >Eliminar</td>";
                                 echo" </tr>";
+                                
                                                                 }
                                ?>            
                             </tbody>
@@ -411,7 +421,7 @@ session_start();
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
+    <script src="../js/delete.js"></script>
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
 

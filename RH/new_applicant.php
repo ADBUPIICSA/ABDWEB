@@ -425,6 +425,11 @@ $curp= $_POST['curp'];
     $query = "insert into aspirante  values ('$nombre','$edad','$telefono','$rfc','$curp')";
 
     $stmt=executeQuery($query);
+if( $stmt === false ) {
+         die( print_r( sqlsrv_errors(), true));
+    }
+
+    
    if ($stmt){ ?>  <div class="alert alert-success alert-dismissable">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                Guardado exitoso.

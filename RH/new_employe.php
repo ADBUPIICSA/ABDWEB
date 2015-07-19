@@ -1,3 +1,17 @@
+<?php session_start(); 
+
+ include("../db/db.php");
+    $conn = sqlsrv_connect( $serverName, $connectionInfo);
+    $query="proc_seleccionar_puesto";
+    $stmt = sqlsrv_query( $conn, $query);
+ 
+
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +33,7 @@
 
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
-
+  <link href="../css/jquery.datetimepicker.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -348,60 +362,63 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">Nuevo Aspirante</h1>
-                         <form role="form" method='post' action=''>
+                         <form role="form" method='post' action='new_employe.php'>
                                     <div class="form-group">
                                          
                                         <div class="form-group">
                                             <label>Nombre</label>
-                                            <input class="form-control" placeholder="Enter text">
+                                            <input class="form-control" placeholder="Enter text" name ="nombre">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Apellido Paterno</label>
-                                            <input class="form-control" placeholder="Enter text">
+                                            <input class="form-control" placeholder="Enter text" name ="ap">
                                         </div>
 
 
                                             <div class="form-group">
                                             <label>Apellido Materno</label>
-                                            <input class="form-control" placeholder="Enter text">
+                                            <input class="form-control" placeholder="Enter text" name ="am">
                                         </div>
 
 
                                             <div class="form-group">
                                             <label>Telefono</label>
-                                            <input class="form-control" placeholder="Enter text">
+                                            <input class="form-control" placeholder="Enter text" name ="tel">
                                         </div>
 
                                             <div class="form-group">
                                             <label>Dirección</label>
-                                            <input class="form-control" placeholder="Enter text">
+                                            <input class="form-control" placeholder="Enter text" name="dir">
                                         </div>
 
                                          <div class="form-group">
                                             <label>e-mail</label>
-                                            <input class="form-control" placeholder="Enter text">
+                                            <input class="form-control" placeholder="Enter text" name="email">
+                                        </div>
+                                         <div class="form-group">
+                                            <label>fecha de ingreso</label>
+                                            <input class="form-control" id="datetimepicker8" placeholder="Enter text" name="ingreso">
                                         </div>
                                         <label>Salario</label>
                                       <div class="form-group input-group">
                                             <span class="input-group-addon">$</span>
-                                            <input type="text" class="form-control">
+                                            <input type="text" class="form-control" name="salario">
                                             <span class="input-group-addon">.00</span>
                                         </div>
 
                                     <div class="form-group">
                                             <label>Puesto</label>
-                                            <select class="form-control">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
+                                            <select class="form-control" name="puesto" >
+                                                <?php while($row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC)){
+                                                    echo "<option value='".$row['id_puesto']."'>"
+                                                    .$row['nombre']."</option>";
+                                                }       ?>
+                                                
                                             </select>
                                         </div>
-
                                 <button type="submit" class="btn btn-default">Submit Button</button>
-                                        <button type="reset" class="btn btn-default">Reset Button</button>
+                                <button type="reset" class="btn btn-default">Reset Button</button>
 
                     </div>
                     <!-- /.col-lg-12 -->
@@ -420,13 +437,77 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+     <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+     <script src="../js/jquery.js"></script>
+     <script src="../js/jquery.datetimepicker.js"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
+<script type="text/javascript">
+      $('#datetimepicker8').datetimepicker({
+    onGenerate:function( ct ){
+        $(this).find('.xdsoft_date')
+            .toggleClass('xdsoft_disabled');
+    },
+    minDate:'-1970/01/2',
+    maxDate:'+1970/01/2',
+    timepicker:false
+});
 
+$('#default_datetimepicker').datetimepicker({
+    formatTime:'H:i',
+    formatDate:'Y.m.d',
+    //defaultDate:'8.12.1986', // it's my birthday
+    defaultDate:'+03.01.1970', // it's my birthday
+    defaultTime:'10:00',
+    timepickerScrollbar:false
+});
+
+        </script>
 </body>
 
 </html>
+
+
+</body>
+
+</html
+
+<?php  
+
+
+if(!isset($_POST['nombre'])){
+
+}
+else{
+$nombre =$_POST['nombre'];
+$ap= $_POST['ap'];
+$am= $_POST['am'];
+$tel= $_POST['tel'];
+$dir= $_POST['dir'];
+$correo= $_POST['email'];    
+$salario= $_POST['salario'];    
+$puesto= $_POST['puesto'];  
+$ingreso= $_POST['ingreso'];  
+    
+
+    $query1 = "proc_nuevo_empleado1 '$nombre','$ap','$am','$tel','$dir','$correo','$salario', '$ingreso', '$puesto'";
+
+    $stmt1=executeQuery( $query1);
+
+if( $stmt1 === false ) {
+         die( print_r( sqlsrv_errors(), true));
+    }
+
+   if ($stmt1){ ?>  <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                               Guardado exitoso.
+                            </div>
+ <?php
+
+}
+}
+

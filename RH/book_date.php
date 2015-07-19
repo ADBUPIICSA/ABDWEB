@@ -1,3 +1,27 @@
+<?php session_start(); 
+
+ include("../db/db.php");
+    $conn = sqlsrv_connect( $serverName, $connectionInfo);
+    
+    
+
+    $query="select * from puestos";
+    $stmt = sqlsrv_query( $conn, $query);
+
+    $query1="select * from empleados";
+    $stmt1 = sqlsrv_query( $conn, $query1);
+
+  $query2="select * from aspirante";
+    $stmt2 = sqlsrv_query( $conn, $query2);
+
+    
+ 
+
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -348,45 +372,55 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">Cita</h1>
-                            <div class="form-group">
+                            <div class="form-group" >
+                            <form class="form-group"method="POST" action="book_date.php">
                                         <div class="form-group">
                                             <label>Aspirante</label>
-                                            <select class="form-control">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
+                                            <select class="form-control" name="aspirante">
+                                            <?php while($row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_ASSOC)){
+                                                    echo "<option value='".$row2['id_aspirante']."'>"
+                                                    .$row2['nombre']."</option>";
+                                                }       ?>
+                                                
+                                            
+                                                </select>
                                         </div>
                                         <div class="form-group">
                                             <label>Puesto</label>
-                                            <select class="form-control">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
+                                            <select class="form-control" name="puesto"  >
+                                                <?php while($row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC)){
+                                                    echo "<option value='".$row['id_puesto']."'>"
+                                                    .$row['nombre']."</option>";
+                                                }       ?>
                                             </select>
                                         </div>
 
                                         <div class="form-group">
                                             <div class='input-group '>
-                                                <input type='text' class="form-control" id="datetimepicker" />
+                                                <input type='text' class="form-control" id="datetimepicker" name="f"/>
                                                 <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                 </span>
                                             </div>
 
                                             <div class="form-group">
-                                            <label>Puesto</label>
-                                            <select class="form-control">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
+                                            <label>Entrevistador</label>
+                                            <select class="form-control" name="empleado">
+                                                <?php while($row1 = sqlsrv_fetch_array( $stmt1, SQLSRV_FETCH_ASSOC)){
+                                                    echo "<option value='".$row1['num_empleado']."'>"
+                                                    .$row1['nombre']."</option>";
+                                                }       ?>
                                             </select>
+                                            <div class="form-group">
+                                            <label>¿Acepetado?</label>
+                                            <select class="form-control" name="aceptado">
+                                            
+                                                    <option value="1">Si</option>
+                                                    <option value="0">NO</option>
+                                             </select>
+                                             <button type="submit" class="btn btn-default">Submit Button</button>
+                                <button type="reset" class="btn btn-default">Reset Button</button>
+                                </form>
                                         </div>
 
                                      </div>
@@ -439,3 +473,34 @@ $('#default_datetimepicker').datetimepicker({
 </body>
 
 </html>
+
+
+<?php
+if(!isset($_POST['aspirante'])){
+
+}
+else{
+$aspirante =$_POST['aspirante'];
+$puesto= $_POST['puesto'];
+$fecha= $_POST['f'];
+$empleado= $_POST['empleado'];
+$acepetado= $_POST['aceptado'];
+
+    
+
+    $query3 = "insert into entrevista values ('$aspirante','$puesto','$fecha','$empleado','$acepetado')";
+
+     $stmt3=executeQuery( $query3);   
+if( $stmt3 === false ) {
+         die( print_r( sqlsrv_errors(), true));
+    }
+
+   if ($stmt1){ ?>  <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                               Guardado exitoso.
+                            </div>
+ <?php
+
+}
+}
+

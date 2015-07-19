@@ -356,6 +356,13 @@
                                             <label>Text area</label>
                                             <textarea  name ="description"class="form-control" rows="3"></textarea>
                                         </div>
+
+                                    <div class="form-group input-group">
+                                            <span class="input-group-addon">$</span>
+                                            <input type="text" class="form-control" name= "monto">
+                                            <span class="input-group-addon">.00</span>
+                                        </div>
+
                                 
                             <button type="submit" class="btn btn-default"> Listo</button>
                                 <button type="reset" class="btn btn-default">Reset Button</button>
@@ -394,10 +401,10 @@ echo "el campo esta vacio";
 else{
 $comp =$_POST['compensacion'];
 $des= $_POST['description'];
-    
+$monto=$_POST['monto'];    
     include("../db/db.php");
 
-    $query = "insert into compensaciones values ('$comp','$des')";
+    $query = "proc_nueva_compensacion '$comp','$des' , $monto";
 
     $stmt=executeQuery($query);
    if ($stmt){ ?>  <div class="alert alert-success alert-dismissable">
